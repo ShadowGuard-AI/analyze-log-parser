@@ -38,7 +38,11 @@ def parse_log_file(file_path, pattern=""):
         raise FileNotFoundError(f"Log file '{file_path}' does not exist.")
 
     try:
-        with open(file_path, "r") as file:
+        # errors="replace": one undecodable byte in a long log should not
+        # cost the whole report. The replacement character lands in
+        # whichever field held the bad byte; the level counts for the
+        # clean lines around it are unaffected.
+        with open(file_path, "r", encoding="utf-8", errors="replace") as file:
             # Read log file into a list of lines
             lines = file.readlines()
         
@@ -103,10 +107,6 @@ def main():
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}")
         sys.exit(1)
-
-# Usage Example:
-# Run this script from the command line:
-# python main.py /path/to/logfile.log --output output_report.csv --pattern ERROR
 
 if __name__ == "__main__":
     main()
