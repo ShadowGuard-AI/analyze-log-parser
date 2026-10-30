@@ -2,6 +2,7 @@ import pandas as pd
 import argparse
 import logging
 import os
+import sys
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -45,8 +46,17 @@ def parse_log_file(file_path, pattern=""):
         if pattern:
             lines = [line for line in lines if pattern in line]
 
-        # Convert lines to a DataFrame (example assumes space-separated logs)
-        data = [line.strip().split() for line in lines]
+        # Convert lines to a DataFrame. Each line is expected to be
+        # "<Timestamp> <Level> <Message>", where the message may contain
+        # spaces, so split at most twice. Blank lines are skipped and
+        # short lines are padded with empty fields.
+        data = []
+        for line in lines:
+            if not line.strip():
+                continue
+            parts = line.strip().split(None, 2)
+            parts += [""] * (3 - len(parts))
+            data.append(parts)
         df = pd.DataFrame(data, columns=["Timestamp", "Level", "Message"])
         return df
     except Exception as e:
@@ -89,8 +99,10 @@ def main():
         print(f"Analysis report saved to: {args.output}")
     except FileNotFoundError as fnf_error:
         logger.error(f"File not found: {fnf_error}")
+        sys.exit(1)
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}")
+        sys.exit(1)
 
 # Usage Example:
 # Run this script from the command line:
