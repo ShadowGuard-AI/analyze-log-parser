@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # analyze-log-parser
 
 A command line tool that parses a plain text log file, counts how many entries have each log level, and writes the counts to a CSV report.
