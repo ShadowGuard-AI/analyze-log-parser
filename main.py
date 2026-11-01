@@ -46,7 +46,11 @@ def parse_log_file(file_path, pattern=""):
             # Read log file into a list of lines
             lines = file.readlines()
         
-        # Filter lines by pattern if provided
+        # The pattern is a plain substring test, case sensitive, run
+        # against the whole raw line before any field split. It can
+        # match inside a message or a timestamp as easily as in the
+        # level field, and ERROR does not match error. It is a text
+        # filter, not a level filter, whatever the caller expects.
         if pattern:
             lines = [line for line in lines if pattern in line]
 
@@ -58,6 +62,11 @@ def parse_log_file(file_path, pattern=""):
         for line in lines:
             if not line.strip():
                 continue
+            # Nothing validates that the first token is a timestamp or
+            # the second a level. A syslog line with a host name in it
+            # puts the host in Timestamp's neighbour and the real level
+            # inside Message, and the counts below then tally host
+            # names as levels without any sign being wrong.
             parts = line.strip().split(None, 2)
             parts += [""] * (3 - len(parts))
             data.append(parts)
@@ -75,6 +84,11 @@ def analyze_logs(df):
     :return: A summary DataFrame with analysis results.
     """
     try:
+        # Counts come out in frequency order, most common first, not in
+        # severity order. A report dominated by INFO lines puts them on
+        # top and the handful of CRITICAL lines sit at the bottom, so
+        # the reader has to scan the whole short table, not just its
+        # head.
         summary = df["Level"].value_counts().reset_index()
         summary.columns = ["Log Level", "Count"]
         return summary
