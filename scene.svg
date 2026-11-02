@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="Observing camp scene: the sky darkens in one slow pass while a highlight checks the telescopes, the ledger table, and the windsock in order">
+  <rect x="0" y="0" width="1200" height="210" fill="#e9dfc8">
+    <animate attributeName="fill" values="#e9dfc8;#3d4852;#3d4852;#e9dfc8" keyTimes="0;0.42;0.62;1" dur="36s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="0" y="210" width="1200" height="90" fill="#c4b48a"/>
+  <g fill="#b08d3e" stroke="#6e5626" stroke-width="3">
+    <line x1="180" y1="205" x2="240" y2="130"/><line x1="330" y1="205" x2="390" y2="130"/><line x1="480" y1="205" x2="540" y2="130"/>
+  </g>
+  <g stroke="#6e4f2a" stroke-width="4">
+    <line x1="210" y1="160" x2="188" y2="212"/><line x1="210" y1="160" x2="232" y2="212"/>
+    <line x1="360" y1="160" x2="338" y2="212"/><line x1="360" y1="160" x2="382" y2="212"/>
+    <line x1="510" y1="160" x2="488" y2="212"/><line x1="510" y1="160" x2="532" y2="212"/>
+  </g>
+  <rect x="640" y="182" width="190" height="34" fill="#7a5c38"/>
+  <rect x="676" y="188" width="118" height="22" fill="#f6f0de"/>
+  <line x1="735" y1="188" x2="735" y2="210" stroke="#b2a892" stroke-width="2"/>
+  <line x1="1048" y1="96" x2="1048" y2="212" stroke="#4a443c" stroke-width="4"/>
+  <polygon points="1048,100 1082,110 1074,142 1048,128" fill="#ce783e"/>
+  <circle r="17" fill="none" stroke="#f2ead6" stroke-width="3" opacity="0">
+    <animate attributeName="cx" values="210;735;1058;1058" keyTimes="0;0.36;0.7;1" dur="18s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="150;196;116;116" keyTimes="0;0.36;0.7;1" dur="18s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0.9;0.9;0;0" keyTimes="0;0.12;0.8;0.92;1" dur="18s" repeatCount="indefinite"/>
+  </circle>
+  <path d="M0 268 Q 300 264 600 268 T 1200 268" fill="none" stroke="#a08c60" stroke-width="3">
+    <animate attributeName="d" values="M0 268 Q 300 264 600 268 T 1200 268;M0 268 Q 300 272 600 268 T 1200 268;M0 268 Q 300 268 600 268 T 1200 268;M0 268 Q 300 268 600 268 T 1200 268" keyTimes="0;0.3;0.55;1" dur="36s" repeatCount="indefinite"/>
+  </path>
+  <path d="M790 210 L 806 188 L 812 210 Z" fill="#f6f0de">
+    <animateTransform attributeName="transform" type="rotate" values="0 794 210;-7 794 210;0 794 210;0 794 210" keyTimes="0;0.06;0.12;1" dur="27s" repeatCount="indefinite"/>
+  </path>
+</svg>
