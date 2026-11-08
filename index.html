@@ -3,108 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>analyze-log-parser: The Eclipse Expedition Ledger</title>
-<meta name="description" content="analyze-log-parser reads a plain text log file, counts how many entries carry each log level, and writes those counts to a CSV report.">
+<title>analyze-log-parser: The Counting House</title>
 <style>
-@font-face{font-family:'Cabin Sketch';src:url('fonts/CabinSketch.ttf') format('truetype');}
-@font-face{font-family:'Barlow';src:url('fonts/Barlow.ttf') format('truetype');}
-:root{--cream:#f2ead6;--slate:#3d4852;--slate2:#2e3741;--brass:#b08d3e;--sand:#c4b48a}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--slate2);font-family:'Barlow',sans-serif;line-height:1.65}
-h1,h2{font-family:'Cabin Sketch',sans-serif;color:var(--slate)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:2rem 6vw;max-width:1120px;margin:0 auto}
-.hero img.banner{width:100%;border:3px solid var(--brass)}
-.logo{width:170px}
-main{padding:0 6vw 3rem;max-width:1120px;margin:0 auto}
-nav{display:flex;gap:.8rem;flex-wrap:wrap;margin:1.2rem 0}
-.fitting{display:inline-block;text-decoration:none;background:linear-gradient(90deg,#8a6c2c,var(--brass),#8a6c2c);border-radius:999px;padding:.42rem;transition:transform .12s}
-.fitting span{display:block;background:var(--slate);color:var(--cream);font-family:'Cabin Sketch',sans-serif;padding:.55rem 1.3rem;border-radius:999px;text-align:center}
-.fitting:hover{box-shadow:0 0 0 2px var(--cream),0 0 0 4px var(--brass)}
-.fitting:active{transform:translateY(2px)}
-.fitting:focus-visible{outline:2px solid var(--slate);outline-offset:4px;box-shadow:0 0 0 6px var(--cream),0 0 0 8px var(--slate)}
-.page{background:#f7f1e0;border-top:6px solid var(--brass);border-left:1px solid var(--sand);border-right:1px solid var(--sand);padding:.4rem 1.5rem 1.3rem;margin:1.8rem 0;background-image:repeating-linear-gradient(180deg,transparent 0 30px,rgba(61,72,82,.07) 30px 31px)}
-.page h2{border-bottom:2px solid var(--brass);padding-bottom:.35rem}
-.page .margin{margin-left:2.2rem;border-left:2px solid var(--sand);padding-left:1rem}
-pre{background:var(--slate);color:var(--cream);padding:1rem;overflow-x:auto}
-code{font-family:inherit;background:rgba(176,141,62,.18);padding:0 .25em}
-pre code{background:none;padding:0}
-a{color:var(--slate);text-decoration-color:var(--brass)}
-a.tick{position:relative;padding-left:1.15em}
-a.tick:before{content:'';position:absolute;left:0;top:.28em;width:.34em;height:.62em;border-right:3px solid var(--slate);border-bottom:3px solid var(--slate);transform:rotate(38deg);transition:all .15s}
-a.tick:hover:before{height:.85em;border-right-color:var(--brass);border-bottom-color:var(--brass)}
-table{border-collapse:collapse;margin:.8rem 0}
-th,td{border:1px solid var(--sand);padding:.4rem .9rem;text-align:left}
-th{font-family:'Cabin Sketch',sans-serif;background:rgba(176,141,62,.16)}
-.band{height:20px;margin:2.2rem 0;background:linear-gradient(90deg,var(--cream),var(--slate) 50%,var(--cream));position:relative}
-.band:after{content:'';position:absolute;left:50%;top:2px;width:16px;height:16px;background:var(--cream);transform:translateX(-50%) rotate(45deg);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
-footer{padding:1rem 6vw 2.4rem;max-width:1120px;margin:0 auto}
+@font-face { font-family: 'Secular One'; src: url('fonts/SecularOne-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Heebo'; src: url('fonts/Heebo-400.woff2') format('woff2'); font-weight: 400; }
+@font-face { font-family: 'Heebo'; src: url('fonts/Heebo-700.woff2') format('woff2'); font-weight: 700; }
+:root { --wood: #4a3421; --maple: #d9b98a; --slate: #3f4750; --crimson: #a31621; --paper: #f5efe3; --ink: #2a2118; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Heebo', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+header.top { display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; background: var(--wood); color: var(--maple); border-bottom: 5px solid var(--crimson); }
+.wordmark { font-family: 'Secular One', sans-serif; letter-spacing: .03em; }
+.tally { color: #e5a7ad; font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; }
+.hero { text-align: center; padding: 50px 22px 8px; }
+.hero img.logo { width: 180px; height: auto; border: 5px solid var(--wood); border-radius: 6px; }
+h1 { font-family: 'Secular One', sans-serif; font-weight: 400; font-size: 2.5rem; margin: 18px 0 6px; color: var(--wood); }
+h2 { font-family: 'Secular One', sans-serif; font-weight: 400; color: var(--wood); border-bottom: 3px solid var(--maple); padding-bottom: 5px; margin-top: 38px; }
+.tag { max-width: 43rem; margin: 0 auto; }
+.buttons { margin: 22px 0 6px; }
+.buttons a { display: inline-block; margin: 4px; padding: 11px 22px; background: var(--slate); color: #fff; font-weight: 700; text-decoration: none; border-radius: 4px; }
+.buttons a.alt { background: transparent; color: var(--wood); border: 2px solid var(--wood); }
+figure.wide { max-width: 1020px; margin: 24px auto; padding: 0 18px; }
+figure.wide img { width: 100%; height: auto; display: block; border: 1px solid var(--maple); }
+figcaption { color: #77644c; font-size: .9rem; padding-top: 8px; text-align: center; }
+.strip { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 20px 18px; }
+.strip div { background: #fff; border: 1px solid var(--maple); border-top: 4px solid var(--crimson); padding: 13px 18px; min-width: 180px; text-align: center; }
+.strip b { display: block; font-family: 'Secular One', sans-serif; font-weight: 400; color: var(--wood); font-size: 1.05rem; }
+main { max-width: 880px; margin: 0 auto; padding: 8px 22px 30px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--maple); padding: 8px 12px; text-align: left; vertical-align: top; }
+th { background: var(--wood); color: var(--maple); }
+code { background: #eadfc6; padding: 1px 6px; border-radius: 3px; }
+pre { background: #efe7d3; border: 1px solid var(--maple); padding: 12px 16px; overflow-x: auto; }
+.hold { border-left: 5px solid var(--crimson); background: #f6e3e0; padding: 13px 18px; }
+footer { text-align: center; padding: 24px 18px 32px; color: #77644c; font-size: .9rem; border-top: 5px solid var(--crimson); margin-top: 28px; }
 </style>
 </head>
 <body>
-<header class="hero">
-<img class="logo" src="assets/logo.png" alt="Hand drawn corona at totality: a slate disc ringed by uneven rays of cloud cream and brass on a ledger page">
-<img class="banner" src="assets/intro-banner.png" alt="Desert observing camp before totality: brass telescopes, tents, crates, a slack windsock, and a blank open ledger on the observing table, with no readable mark anywhere">
-<h1>analyze-log-parser</h1>
-<p>The expedition ledger, opened flat. Each topic is entered as an observation on its own page, in the order an observer would work through the count.</p>
-<nav>
-<a class="fitting" href="#count"><span>Run the Count</span></a>
-<a class="fitting" href="#format"><span>Line Format</span></a>
-<a class="fitting" href="#pattern"><span>Pattern Filter</span></a>
-<a class="fitting" href="#behaviour"><span>Behaviour and Limitations</span></a>
-<a class="fitting" href="#licence"><span>Licence</span></a>
-</nav>
-</header>
+<header class="top"><span class="wordmark">analyze-log-parser</span><span class="tally">Every line counted</span></header>
+<section class="hero">
+<img class="logo" src="assets/logo.png" alt="Large wooden abacus straight on at a slate counter, pale maple beads pushed into uneven groups along its dark wood rods and one single crimson bead standing apart at the end of the top rod">
+<h1>The Counting House</h1>
+<p class="tag">A command line tool that parses a plain text log file, counts how many entries have each log level, and writes the counts to a CSV report. The counting house abacus files every entry under its column and tallies the beads into a report; this parser files every log line under its level the same way.</p>
+<p class="buttons"><a href="https://github.com/ShadowGuard-AI/analyze-log-parser">View on GitHub</a> <a class="alt" href="https://github.com/ShadowGuard-AI/analyze-log-parser#readme">Read the README</a></p>
+</section>
+<figure class="wide"><img src="assets/intro-banner.png" alt="Fingers close up sliding the last beads of a row into place against the counted group on the abacus, the crimson bead waiting at the top rod's end above the slate"><figcaption>Fingers close up, sliding the last beads of a row into place against the counted group.</figcaption></figure>
+<div class="strip">
+<div><b>Two columns</b>Log Level and Count</div>
+<div><b>Three fields</b>expected on every line</div>
+<div><b>report.csv</b>the default report name</div>
+<div><b>pandas</b>the one third party requirement</div>
+</div>
 <main>
-<section class="page" id="count"><h2>First entry: the count the tool keeps</h2>
-<p>analyze-log-parser reads a plain text log file, counts how many entries carry each log level, and writes those counts to a CSV report. Its stated position sits under data analysis and reporting, in its own heading line only where the README places it there.</p>
-<p>The claim kept on this page is the count itself. The README claims no searching beyond its pattern filter, no graphing, and no repair of the logs it reads.</p>
-<p>Second entry, requirements and getting the instrument unpacked: Python 3 is required, pandas is required and is listed in requirements.txt, and argparse, logging, os, and sys come from the Python standard library. The install sequence, printed in full as the README gives it:</p>
-<pre><code>git clone https://github.com/ShadowGuard-AI/analyze-log-parser.git
-cd analyze-log-parser
-pip install -r requirements.txt</code></pre>
-<p class="margin">Ledger note: no PyPI package exists for this tool, and it runs from the cloned directory.</p>
-</section>
-<div class="band"></div>
-<section class="page" id="format"><h2>Third entry: how a line must be written to be counted</h2>
-<p>Each log line holds three fields parted by whitespace, Timestamp, Level, and Message, in that order. The message may contain spaces. Blank lines are skipped, and lines with fewer than three fields are padded with empty fields.</p>
-<p class="margin">Margin warning: a timestamp which itself contains a space will be split at the first two spaces and will not parse as intended.</p>
-<p>The worked example from the README, four lines from app.log:</p>
-<pre><code>2024-01-01 INFO User logged in successfully
-2024-01-01 ERROR Failed to connect to database
-2024-01-02 INFO User logged out
-2024-01-02 WARNING Disk space low</code></pre>
-</section>
-<div class="band"></div>
-<section class="page" id="pattern"><h2>Fourth entry: running the count and reading the result</h2>
-<pre><code>python3 main.py app.log --output report.csv</code></pre>
-<p>This prints: Analysis report saved to: report.csv</p>
+<h2>What it does</h2>
+<p>The tool reads a plain text log file, counts the entries at each log level, and writes the tally to a CSV report with two columns, <code>Log Level</code> and <code>Count</code>, one row per distinct level. It requires Python 3 and pandas, listed in <code>requirements.txt</code> as <code>pandas&gt;=1.5.0</code>; the other imports are from the Python standard library. A successful run prints <code>Analysis report saved to: report.csv</code>, and the README's worked example counts INFO 2, ERROR 1, WARNING 1. An optional <code>--pattern</code> filter keeps only lines containing the given string before counting.</p>
+<figure class="wide" style="padding:0;margin:18px 0;"><img src="assets/banner.png" alt="Counting house counter in warm window light with one large abacus at its centre, its beads settled into tallies of different heights column by column, a slate and chalk and a neat stack of blank tally sheets beside it and one crimson bead on the top rod"></figure>
+<h2>Usage</h2>
+<pre>python3 main.py app.log --output report.csv
+python3 main.py app.log --output errors.csv --pattern ERROR</pre>
+<h2>Parameters</h2>
 <table>
-<tr><th>Log Level</th><th>Count</th></tr>
-<tr><td>INFO</td><td>2</td></tr>
-<tr><td>ERROR</td><td>1</td></tr>
-<tr><td>WARNING</td><td>1</td></tr>
+<tr><th>Parameter</th><th>What the README says</th></tr>
+<tr><td><code>logfile</code></td><td>Positional, required: path to the log file to analyze</td></tr>
+<tr><td><code>--output</code></td><td>Path for the CSV report. Default is <code>report.csv</code></td></tr>
+<tr><td><code>--pattern</code></td><td>Optional string. Only lines containing it are counted. Default is empty, which counts every line</td></tr>
+<tr><td><code>-h</code>, <code>--help</code></td><td>Show help and exit</td></tr>
 </table>
-<p>The pattern filter, in its own ruled sub entry, keeps only lines containing the given string before counting:</p>
-<pre><code>python3 main.py app.log --output errors.csv --pattern ERROR</code></pre>
-<p>The full parameter list, as a ledger table:</p>
-<table>
-<tr><th>Parameter</th><th>What it does</th></tr>
-<tr><td><code>logfile</code></td><td>Required positional path to the log file to analyze.</td></tr>
-<tr><td><code>--output</code></td><td>Path for the CSV report. Default is report.csv.</td></tr>
-<tr><td><code>--pattern</code></td><td>Optional string. Only lines containing it are counted. Default is empty, which counts every line.</td></tr>
-<tr><td><code>-h</code>, <code>--help</code></td><td>Show help and exit.</td></tr>
-</table>
-<p><a class="tick" href="https://github.com/ShadowGuard-AI/analyze-log-parser">The repository on GitHub</a></p>
-</section>
-<div class="band"></div>
-<section class="page" id="behaviour"><h2>Fifth entry: behaviour at the edges</h2>
-<p>An empty log file, or a pattern that matches nothing, yields a report containing only the header row. A missing log file logs File not found: Log file '&lt;path&gt;' does not exist. and exits with status 1, and other processing failures also exit with status 1.</p>
-<p>The page states honestly that no bundled tests exist and that the examples were verified by hand.</p>
-</section>
-<div class="band"></div>
-<section class="page" id="licence"><h2>Licence: the ledger closes</h2>
-<p>GNU General Public License v3.0, see LICENSE. Copyright (C) 2023 CY83R-3X71NC710N, reproduced as written.</p>
-</section>
+<h2>Stated limits</h2>
+<div class="hold"><p>Each log line is expected to have three fields separated by whitespace: timestamp, level, message. The message may contain spaces. Blank lines are skipped, and lines with fewer than three fields are padded with empty fields. Lines in any other format, for example timestamps that themselves contain a space, will be split at the first two spaces and will not parse as intended. An empty log file, or a pattern that matches nothing, produces a report containing only the header row. A missing log file logs <code>File not found: Log file '&lt;path&gt;' does not exist.</code> and exits with status 1; other processing failures also exit with status 1. This tool has no <code>-d</code> or <code>--delimiter</code> option and no short <code>-o</code> option, despite what earlier versions of its README said. There is no package on PyPI for this tool, and there are no bundled tests; the examples in the README were verified by hand. The licence is the GNU General Public License v3.0, see LICENSE.</p></div>
 </main>
-<footer><p>Theme: The Eclipse Expedition Ledger. Type: Cabin Sketch for headings, Barlow for reading, both SIL Open Font License 1.1. Lettering reference Robotop was reference only and is not embedded.</p></footer>
+<footer>analyze-log-parser, tallied by level. Fonts: Secular One and Heebo, self-hosted under the SIL Open Font License.</footer>
 </body>
 </html>
