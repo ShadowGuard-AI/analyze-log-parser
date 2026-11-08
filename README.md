@@ -1,13 +1,12 @@
-![Desert observing camp before totality: brass telescopes in a row, tents, unmarked crates, a slack windsock, and a blank open ledger on the observing table, with no readable mark anywhere](intro-banner.png)
+![Fingers close up sliding the last beads of a row into place against the counted group on the abacus, the crimson bead waiting at the top rod's end above the slate](intro-banner.png)
 
 # analyze-log-parser
 
-The Eclipse Expedition Ledger: a count made under pressure and kept permanently.
+![Counting house counter in warm window light with one large abacus at its centre, its beads settled into tallies of different heights column by column, a slate and chalk and a neat stack of blank tally sheets beside it and one crimson bead on the top rod](banner.png)
 
-![Desert observing camp in the last light before totality, the project name written in Cabin Sketch across the open expedition ledger in the foreground](banner.png)
+<p align="center"><img src="logo.png" alt="Large wooden abacus straight on at a slate counter, pale maple beads pushed into uneven groups along its dark wood rods and one single crimson bead standing apart at the end of the top rod" width="180"></p>
 
 ![Observing camp scene: the sky darkens in one slow pass while a highlight checks the telescopes, the ledger table, and the windsock in order, and the heat shimmer settles](scene.svg)
-
 
 # analyze-log-parser
 
