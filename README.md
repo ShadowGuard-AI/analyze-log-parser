@@ -8,8 +8,6 @@
 
 ![Observing camp scene: the sky darkens in one slow pass while a highlight checks the telescopes, the ledger table, and the windsock in order, and the heat shimmer settles](scene.svg)
 
-# analyze-log-parser
-
 A command line tool that parses a plain text log file, counts how many entries have each log level, and writes the counts to a CSV report.
 
 
@@ -112,7 +110,7 @@ Note: this tool has no `-d` or `--delimiter` option and no short `-o` option, de
 
 ## License
 
-GNU General Public License v3.0. See `LICENSE`.
+GNU General Public License v3.0. See [LICENSE](LICENSE).
 Copyright (C) 2023 CY83R-3X71NC710N
 
 > Margin note: a missing log file logs `File not found: Log file '<path>' does not exist.` and exits with status 1.
